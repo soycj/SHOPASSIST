@@ -1,13 +1,34 @@
 package com.normanfernandez.shopassist.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "items")
 public class Item 
 {
+    @Id
+    @Column(name = "id")
     private int id;
+    
+    @Column(name = "name")
     private String name;
+    
+    @Column(name = "description")
     private String description;
+    
+    @Column(name = "code")
     private String code;
+    
+    @Column(name = "unit_price")
     private double unitPrice;
+    
+    @Column(name = "tax_rate")
     private double taxRate;
+    
+    @Column(name = "position")
     private String position;
 
     public double getTaxRate() {
