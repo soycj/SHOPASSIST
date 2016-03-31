@@ -7,7 +7,16 @@ public class Item
     private String description;
     private String code;
     private double unitPrice;
+    private double taxRate;
     private String position;
+
+    public double getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(double taxRate) {
+        this.taxRate = taxRate;
+    }
 
     public int getId() {
         return id;
