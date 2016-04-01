@@ -12,7 +12,7 @@ public class Item
 
     public Object [] toArr()
     {
-        Object [] arg = {this.code, this.name};
+        Object [] arg = {this.code, this.name, this.unitPrice};
         return arg;
     }
     

@@ -7,6 +7,7 @@ package com.normanfernandez.shopassist.views;
 
 import com.normanfernandez.shopassist.DAO.ItemDAO;
 import com.normanfernandez.shopassist.models.Item;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
@@ -19,20 +20,60 @@ import javax.swing.table.TableModel;
  */
 public class SalesForm extends javax.swing.JFrame {
 
-    List<Item> itemList = new ArrayList<Item>();
-    String [] col = {"code", "name"};
-        DefaultTableModel model = new DefaultTableModel(col,0);
+    private double subtotal = 0.0;
+    private List<Item> itemList = new ArrayList<Item>();
+    private String [] col = {"code", "name", "price"};
+    private DefaultTableModel model = new DefaultTableModel(col,0);
+    private ItemDAO itemDAO;
+    private Item lastItem;
+    
+    private void addToSubtotal(double price)
+    {
+        this.subtotal += price;
+    }
+    
+    private void subtractToSubtotal(double price)
+    {
+        this.subtotal -= price;
+    }
+    
+    private void clearProductInfo()
+    {
+        this.lblName.setText("");
+        this.lblDescription.setText("");
+    }
+    
+    private void refreshSubtotal()
+    {
+        this.lblSubtotal.setText(Double.toString(subtotal));
+    }
+    
+    private void addProduct(Item item)
+    {
+        itemList.add(item);
+        this.model.addRow(item.toArr());
+        this.subtotal+= item.getUnitPrice();
+        this.lastItem = item;
+        this.lblName.setText(item.getName());
+        this.lblDescription.setText(item.getDescription());
+        refreshSubtotal();
+    }
+    
+    private void clearTable()
+    {
+        this.model.setRowCount(0);
+        this.subtotal = 0.0;
+        this.itemList.clear();
+        clearProductInfo();
+        refreshSubtotal();
+    }
     
     public SalesForm() {
         initComponents();
         
         try{
-        ItemDAO itemDAO = new ItemDAO();
-        List<Object[]> durr = new ArrayList<>();
-        for(Item i:itemDAO.findAll()){
-            model.addRow(i.toArr());
-            System.out.println(i.toArr());
-        }
+        this.itemDAO = new ItemDAO();
+        refreshSubtotal();
         }catch(Exception e){System.out.println(e.getLocalizedMessage());}
         
     }
@@ -63,7 +104,6 @@ public class SalesForm extends javax.swing.JFrame {
         lblSubtotal = new javax.swing.JLabel();
         txtCode = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,12 +122,6 @@ public class SalesForm extends javax.swing.JFrame {
 
         jLabel2.setText("Descripción:");
 
-        lblName.setText("jLabel3");
-
-        lblDescription.setText("jLabel4");
-
-        txtQuantity.setText("jTextField1");
-
         jLabel3.setText("Cantidad:");
 
         btnMinus.setText("-");
@@ -96,17 +130,22 @@ public class SalesForm extends javax.swing.JFrame {
 
         jLabel4.setText("Precio unidad:");
 
-        lblPrice.setText("jLabel5");
-
         jLabel5.setText("Subtotal:");
 
-        lblSubtotal.setText("jLabel6");
+        lblSubtotal.setText("0");
 
-        txtCode.setText("jTextField1");
+        txtCode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodeKeyPressed(evt);
+            }
+        });
 
         jButton1.setText("jButton1");
-
-        jTextField1.setText("jTextField1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -128,36 +167,37 @@ public class SalesForm extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblSubtotal))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton1))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel4)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(lblPrice))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblPrice))
+                                    .addComponent(txtCode)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                 .addComponent(jLabel2)
-                                                .addComponent(jLabel3))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(lblDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnMinus, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnPlus)))
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(91, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(lblDescription))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnMinus, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnPlus)))))))
+                .addGap(114, 114, 114))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
+                .addContainerGap(41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -178,12 +218,10 @@ public class SalesForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(lblPrice))
-                        .addGap(18, 18, 18)
+                        .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
@@ -197,8 +235,38 @@ public class SalesForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
+        clearTable();
     }//GEN-LAST:event_btnClearActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try{
+            Item i = itemDAO.findByCode(txtCode.getText().trim() + "\n");
+            txtCode.setText("");
+            if(i != null)
+                this.addProduct(i);
+            else
+                this.lblName.setText("Producto no encontrado!");
+        }catch(Exception e){
+            System.out.println(e.getLocalizedMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtCodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodeKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            try{
+            Item i = itemDAO.findByCode(txtCode.getText().trim() + "\n");
+            txtCode.setText("");
+            if(i != null)
+                this.addProduct(i);
+            else
+                this.lblName.setText("Producto no encontrado!");
+        }catch(Exception e){
+            System.out.println(e.getLocalizedMessage());
+        }
+        }
+    }//GEN-LAST:event_txtCodeKeyPressed
 
     /**
      * @param args the command line arguments
@@ -217,7 +285,6 @@ public class SalesForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPrice;
