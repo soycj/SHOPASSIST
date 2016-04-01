@@ -6,13 +6,14 @@
 package com.normanfernandez.shopassist.views;
 
 import com.normanfernandez.shopassist.DAO.ItemDAO;
-import com.normanfernandez.shopassist.models.Item;
+import com.normanfernandez.shopassist.models.Items;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import javax.swing.JTable;
+import java.util.Map;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -21,42 +22,59 @@ import javax.swing.table.TableModel;
 public class SalesForm extends javax.swing.JFrame {
 
     private double subtotal = 0.0;
-    private List<Item> itemList = new ArrayList<Item>();
-    private String [] col = {"code", "name", "price"};
-    private DefaultTableModel model = new DefaultTableModel(col,0);
-    private ItemDAO itemDAO;
-    private Item lastItem;
-    
-    private void addToSubtotal(double price)
-    {
-        this.subtotal += price;
-    }
-    
-    private void subtractToSubtotal(double price)
-    {
-        this.subtotal -= price;
-    }
-    
+    private final HashMap<Items, Integer> itemList = new HashMap<>();
+    private final String [] col = {"code", "name", "price","position", "quantity"};
+    private final DefaultTableModel model = new DefaultTableModel(col,0);
+    private final ItemDAO itemDAO = new ItemDAO();
+    private Items lastItem;
+       
     private void clearProductInfo()
     {
         this.lblName.setText("");
         this.lblDescription.setText("");
+        this.lblPrice.setText("");
+    }
+    
+    private void refreshList()
+    {
+        this.model.setRowCount(0);
     }
     
     private void refreshSubtotal()
     {
-        this.lblSubtotal.setText(Double.toString(subtotal));
+        this.model.setRowCount(0);
+        this.subtotal = 0.0;
+        for(Map.Entry<Items, Integer> iterator : itemList.entrySet())
+        {
+            this.model.addRow(appendQuantity(iterator.getKey().toArr(), iterator.getValue()));
+            this.subtotal+= (iterator.getKey().getUnitPrice().doubleValue() * iterator.getValue());
+        }
+        this.lblSubtotal.setText(String.format("$%.02f", subtotal));
     }
     
-    private void addProduct(Item item)
+    private void addProduct(Items item)
     {
-        itemList.add(item);
-        this.model.addRow(item.toArr());
-        this.subtotal+= item.getUnitPrice();
-        this.lastItem = item;
+        if(itemList.containsKey(item))
+        {
+            Integer quantity = itemList.get(item);
+            itemList.put(item, quantity + 1);
+        }
+        else
+        {
+            itemList.put(item, 1);
+        }
+        refreshList();
         this.lblName.setText(item.getName());
         this.lblDescription.setText(item.getDescription());
+        this.lblPrice.setText(String.format("$%.02f", item.getUnitPrice().doubleValue()));
         refreshSubtotal();
+    }
+    
+    private Object [] appendQuantity(Object [] item, Object quantity)
+    {
+        List<Object> objectList = new ArrayList<>(Arrays.asList(item));
+        objectList.add(quantity);
+        return objectList.toArray();
     }
     
     private void clearTable()
@@ -68,14 +86,9 @@ public class SalesForm extends javax.swing.JFrame {
         refreshSubtotal();
     }
     
-    public SalesForm() {
+    public SalesForm() 
+    {
         initComponents();
-        
-        try{
-        this.itemDAO = new ItemDAO();
-        refreshSubtotal();
-        }catch(Exception e){System.out.println(e.getLocalizedMessage());}
-        
     }
 
     /**
@@ -140,7 +153,7 @@ public class SalesForm extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Enter");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -240,14 +253,15 @@ public class SalesForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
-            Item i = itemDAO.findByCode(txtCode.getText().trim() + "\n");
-            txtCode.setText("");
-            if(i != null)
-                this.addProduct(i);
-            else
-                this.lblName.setText("Producto no encontrado!");
+            Items i = itemDAO.findByCode(txtCode.getText().trim() + "\n");
+            this.addProduct(i);
         }catch(Exception e){
-            System.out.println(e.getLocalizedMessage());
+            clearProductInfo();
+            this.lblName.setText("Producto no encontrado!");
+        }
+        finally
+        {
+            txtCode.setText("");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -255,16 +269,20 @@ public class SalesForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(evt.getKeyChar() == KeyEvent.VK_ENTER)
         {
-            try{
-            Item i = itemDAO.findByCode(txtCode.getText().trim() + "\n");
-            txtCode.setText("");
-            if(i != null)
+            try
+            {
+                Items i = itemDAO.findByCode(txtCode.getText().trim() + "\n");
                 this.addProduct(i);
-            else
+            }
+            catch(Exception e)
+            {
+                clearProductInfo();
                 this.lblName.setText("Producto no encontrado!");
-        }catch(Exception e){
-            System.out.println(e.getLocalizedMessage());
-        }
+            }
+            finally
+            {
+                txtCode.setText("");
+            }
         }
     }//GEN-LAST:event_txtCodeKeyPressed
 
