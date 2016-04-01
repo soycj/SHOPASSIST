@@ -5,9 +5,13 @@
  */
 package com.normanfernandez.shopassist.views;
 
+import com.normanfernandez.shopassist.DAO.ItemDAO;
 import com.normanfernandez.shopassist.models.Item;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -16,8 +20,21 @@ import java.util.List;
 public class SalesForm extends javax.swing.JFrame {
 
     List<Item> itemList = new ArrayList<Item>();
+    String [] col = {"code", "name"};
+        DefaultTableModel model = new DefaultTableModel(col,0);
+    
     public SalesForm() {
         initComponents();
+        
+        try{
+        ItemDAO itemDAO = new ItemDAO();
+        List<Object[]> durr = new ArrayList<>();
+        for(Item i:itemDAO.findAll()){
+            model.addRow(i.toArr());
+            System.out.println(i.toArr());
+        }
+        }catch(Exception e){System.out.println(e.getLocalizedMessage());}
+        
     }
 
     /**
@@ -58,17 +75,7 @@ public class SalesForm extends javax.swing.JFrame {
             }
         });
 
-        itemTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        itemTable.setModel(model);
         jScrollPane1.setViewportView(itemTable);
 
         jLabel1.setText("Nombre del Producto:");

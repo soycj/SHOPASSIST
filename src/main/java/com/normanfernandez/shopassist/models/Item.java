@@ -10,6 +10,12 @@ public class Item
     private double taxRate;
     private String position;
 
+    public Object [] toArr()
+    {
+        Object [] arg = {this.code, this.name};
+        return arg;
+    }
+    
     public Item(String code, String name) {
         this.name = name;
         this.code = code;
