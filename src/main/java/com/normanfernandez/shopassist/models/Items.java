@@ -99,7 +99,7 @@ public class Items implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return description != null ? description : "";
     }
 
     public void setDescription(String description) {
@@ -107,7 +107,7 @@ public class Items implements Serializable {
     }
 
     public String getPosition() {
-        return position;
+        return position != null ? position : "";
     }
 
     public void setPosition(String position) {
@@ -115,7 +115,7 @@ public class Items implements Serializable {
     }
 
     public BigDecimal getUnitPrice() {
-        return unitPrice;
+        return unitPrice != null ? unitPrice : BigDecimal.ZERO;
     }
 
     public void setUnitPrice(BigDecimal unitPrice) {
@@ -123,7 +123,7 @@ public class Items implements Serializable {
     }
 
     public BigDecimal getTaxRate() {
-        return taxRate;
+        return taxRate != null ? taxRate : BigDecimal.ZERO;
     }
 
     public void setTaxRate(BigDecimal taxRate) {
@@ -150,6 +150,7 @@ public class Items implements Serializable {
     }
 
     public Object [] toArr(){
-        return new Object[]{ code, name, unitPrice.toPlainString(), position };
+        return new Object[]{ code, name, 
+            getUnitPrice().toPlainString(), getPosition() };
     }
 }

@@ -15,10 +15,6 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author elnor
- */
 public class SalesForm extends javax.swing.JFrame {
 
     private double subtotal = 0.0;
@@ -38,6 +34,7 @@ public class SalesForm extends javax.swing.JFrame {
     private void refreshList()
     {
         this.model.setRowCount(0);
+        this.spQuantity.setValue(1);
     }
     
     private void refreshSubtotal()
@@ -57,11 +54,11 @@ public class SalesForm extends javax.swing.JFrame {
         if(itemList.containsKey(item))
         {
             Integer quantity = itemList.get(item);
-            itemList.put(item, quantity + 1);
+            itemList.put(item, quantity + Integer.valueOf(spQuantity.getValue().toString()));
         }
         else
         {
-            itemList.put(item, 1);
+            itemList.put(item,Integer.valueOf(spQuantity.getValue().toString()));
         }
         refreshList();
         this.lblName.setText(item.getName());
@@ -107,16 +104,14 @@ public class SalesForm extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
         lblDescription = new javax.swing.JLabel();
-        txtQuantity = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        btnMinus = new javax.swing.JButton();
-        btnPlus = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         lblPrice = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         lblSubtotal = new javax.swing.JLabel();
         txtCode = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        spQuantity = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -137,10 +132,6 @@ public class SalesForm extends javax.swing.JFrame {
 
         jLabel3.setText("Cantidad:");
 
-        btnMinus.setText("-");
-
-        btnPlus.setText("+");
-
         jLabel4.setText("Precio unidad:");
 
         jLabel5.setText("Subtotal:");
@@ -160,6 +151,9 @@ public class SalesForm extends javax.swing.JFrame {
             }
         });
 
+        spQuantity.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
+        spQuantity.setToolTipText("");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -167,7 +161,6 @@ public class SalesForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnClear)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
@@ -188,24 +181,19 @@ public class SalesForm extends javax.swing.JFrame {
                                         .addComponent(lblPrice))
                                     .addComponent(txtCode)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addComponent(jLabel2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(lblDescription))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addComponent(jLabel3)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnMinus, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnPlus)))))))
-                .addGap(114, 114, 114))
+                                        .addComponent(lblDescription))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(spQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton1)
+                                .addGap(139, 139, 139))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnClear)
+                        .addGap(114, 114, 114))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,13 +209,11 @@ public class SalesForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(lblDescription))
-                        .addGap(29, 29, 29)
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3)
-                            .addComponent(btnMinus)
-                            .addComponent(btnPlus))
-                        .addGap(33, 33, 33)
+                            .addComponent(spQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(lblPrice))
@@ -253,10 +239,11 @@ public class SalesForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
-            Items i = itemDAO.findByCode(txtCode.getText().trim() + "\n");
+            Items i = itemDAO.findByCode(txtCode.getText().trim());
             this.addProduct(i);
         }catch(Exception e){
             clearProductInfo();
+            e.printStackTrace();
             this.lblName.setText("Producto no encontrado!");
         }
         finally
@@ -271,12 +258,13 @@ public class SalesForm extends javax.swing.JFrame {
         {
             try
             {
-                Items i = itemDAO.findByCode(txtCode.getText().trim() + "\n");
+                Items i = itemDAO.findByCode(txtCode.getText().trim());
                 this.addProduct(i);
             }
             catch(Exception e)
             {
                 clearProductInfo();
+                e.printStackTrace();
                 this.lblName.setText("Producto no encontrado!");
             }
             finally
@@ -293,8 +281,6 @@ public class SalesForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnMinus;
-    private javax.swing.JButton btnPlus;
     private javax.swing.JTable itemTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -307,7 +293,7 @@ public class SalesForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPrice;
     private javax.swing.JLabel lblSubtotal;
+    private javax.swing.JSpinner spQuantity;
     private javax.swing.JTextField txtCode;
-    private javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
 }
