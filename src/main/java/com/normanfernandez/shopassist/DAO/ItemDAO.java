@@ -1,105 +1,99 @@
 package com.normanfernandez.shopassist.DAO;
 
-import java.io.Serializable;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
+import com.mysql.jdbc.ResultSet;
 import com.normanfernandez.shopassist.models.Item;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ItemDAO implements DAO<Item, String>
+public class ItemDAO extends AbstractDAO<Item>
 {
-
-    private Session currentSession;
-    private Transaction currentTransaction;
-    
-    public ItemDAO() {
-    }
-
-    private static SessionFactory getSessionFactory()
-    {
-        Configuration configuration = new Configuration().configure();
-        StandardServiceRegistryBuilder builder = 
-                new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-        SessionFactory factory = configuration.buildSessionFactory(builder.build());
-        return factory;
-    }
-    
-    public Session openCurrentSession()
-    {
-        currentSession = getSessionFactory().openSession();
-        return currentSession;
-    }
-    
-    public Session openCurrentSessionWithTransaction()
-    {
-        currentSession = getSessionFactory().openSession();
-        currentTransaction = currentSession.beginTransaction();
-        return currentSession;
-    }
-    
-    public Session getCurrentSession() {
-        return currentSession;
-    }
-
-    public void setCurrentSession(Session currentSession) {
-        this.currentSession = currentSession;
-    }
-
-    public Transaction getCurrentTransaction() {
-        return currentTransaction;
-    }
-
-    public void setCurrentTransaction(Transaction currentTransaction) {
-        this.currentTransaction = currentTransaction;
-    }
-    
-    public void closeCurrentSession()
-    {
-        currentSession.close();
-    }
-    
-    public void closeCurrentSessionWithTransaction()
-    {
-        currentTransaction.commit();
-        currentSession.close();
-    }
-    
+        protected final String selectAllQuery = 
+			"SELECT * FROM `items`;"
+			;
+	
+	protected final String selectByCode=
+			"SELECT * FROM shopassist.items WHERE `code` = '%s';"
+			;
+	
+	protected final String insertQuery = 
+			"INSERT INTO `items`("
+			+ "`name`,"
+			+ "`code`,"
+			+ "`description`,"
+			+ "`position`,"
+			+ "`unit_price`,"
+                        + "`tax_rate`)"
+			+ "VALUES('%s', '%s', '%s', '%s', '%f', '%f');"
+			;
+	
+	protected final String selectWhere = 
+			"SELECT * FROM `taxis`"
+			+ "WHERE `idtaxis` = %d;"
+			;
+        
+        public ItemDAO() throws SQLException {
+		super();
+	}
+        
     @Override
-    public void persist(Item entity) {
-        getCurrentSession().persist(entity);
+    public void add(Item entity) throws SQLException{
+        this.statement.executeUpdate(
+				String.format(insertQuery,
+					entity.getName(),
+					entity.getCode(),
+					entity.getDescription(),
+					entity.getPosition(),
+                                        entity.getUnitPrice(),
+                                        entity.getTaxRate()));
     }
 
     @Override
-    public void update(Item entity) {
-        getCurrentSession().update(entity);
+    public void update(Item entity) throws SQLException{
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Item findById(String id) {
-        Item i = (Item)getCurrentSession().get(Item.class, id);
+    public Item findByCode(String code) throws SQLException{
+        this.resultSet = (ResultSet) statement.executeQuery(
+				String.format(selectByCode, code));
+        Item i = null;
+        if(this.resultSet.next()){
+            i = new Item(this.resultSet.getString("code"), this.resultSet.getString("name"));			i.setDescription(this.resultSet.getString("description"));
+            i.setPosition(this.resultSet.getString("position"));
+            i.setId(this.resultSet.getInt("id"));
+            i.setTaxRate(this.resultSet.getDouble("tax_rate"));
+            i.setUnitPrice(this.resultSet.getDouble("unit_price"));
+        }
         return i;
     }
 
     @Override
-    public void delete(Item entity) {
-        getCurrentSession().delete(entity);
+    public void delete(Item entity) throws SQLException{
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Item> findAll() {
-        List<Item> list = (List<Item>) getCurrentSession()
-                .createQuery("from items").list();
-        return list;
+    public List<Item> findAll()  throws SQLException {
+        List<Item> result = new ArrayList<Item>();
+		this.resultSet = (ResultSet) statement.executeQuery(selectAllQuery);
+		while(this.resultSet.next()){
+			Item i = new Item(this.resultSet.getString("code"), this.resultSet.getString("name"));
+			i.setDescription(this.resultSet.getString("description"));
+			i.setPosition(this.resultSet.getString("position"));
+			i.setId(this.resultSet.getInt("id"));
+			i.setTaxRate(this.resultSet.getDouble("tax_rate"));
+			i.setUnitPrice(this.resultSet.getDouble("unit_price"));
+			result.add(i);
+		}
+		
+		return result;
     }
 
     @Override
-    public void deleteAll() {
-        List<Item> list = findAll();
-        for(Item i : list)
-            delete(i);
+    public void deleteAll() throws SQLException{
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
+

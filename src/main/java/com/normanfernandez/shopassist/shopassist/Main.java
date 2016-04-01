@@ -5,11 +5,19 @@
  */
 package com.normanfernandez.shopassist.shopassist;
 import com.normanfernandez.shopassist.views.SalesForm;
+import com.normanfernandez.shopassist.DAO.*;
+import com.normanfernandez.shopassist.models.Item;
+import com.normanfernandez.shopassist.Database.DatabaseConnectionData;
+import java.util.List;
 
 public class Main 
 {
     public static void main(String [] args)
     {
+        DatabaseConnectionData.address = "10.0.0.9";
+        DatabaseConnectionData.user = "root";
+        DatabaseConnectionData.password = "pony";
+        
         SalesForm form = new SalesForm();
         form.setVisible(true);
         form.setDefaultCloseOperation(3);
