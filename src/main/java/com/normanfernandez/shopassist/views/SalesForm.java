@@ -29,6 +29,7 @@ public class SalesForm extends javax.swing.JFrame {
         this.lblName.setText("");
         this.lblDescription.setText("");
         this.lblPrice.setText("");
+        this.spQuantity.setValue(1);
     }
     
     private void refreshList()
@@ -86,6 +87,7 @@ public class SalesForm extends javax.swing.JFrame {
     public SalesForm() 
     {
         initComponents();
+        txtCode.requestFocusInWindow();
     }
 
     /**
@@ -153,6 +155,12 @@ public class SalesForm extends javax.swing.JFrame {
 
         spQuantity.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
         spQuantity.setToolTipText("");
+        spQuantity.setNextFocusableComponent(txtCode);
+        spQuantity.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spQuantityStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -235,6 +243,7 @@ public class SalesForm extends javax.swing.JFrame {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         clearTable();
+        txtCode.requestFocusInWindow();
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -249,6 +258,7 @@ public class SalesForm extends javax.swing.JFrame {
         finally
         {
             txtCode.setText("");
+            txtCode.requestFocusInWindow();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -270,9 +280,14 @@ public class SalesForm extends javax.swing.JFrame {
             finally
             {
                 txtCode.setText("");
+                txtCode.requestFocusInWindow();
             }
         }
     }//GEN-LAST:event_txtCodeKeyPressed
+
+    private void spQuantityStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spQuantityStateChanged
+        txtCode.requestFocusInWindow();
+    }//GEN-LAST:event_spQuantityStateChanged
 
     /**
      * @param args the command line arguments
