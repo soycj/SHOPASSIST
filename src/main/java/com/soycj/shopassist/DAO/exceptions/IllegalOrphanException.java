@@ -1,4 +1,4 @@
-package com.normanfernandez.shopassist.DAO.exceptions;
+package com.soycj.shopassist.DAO.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

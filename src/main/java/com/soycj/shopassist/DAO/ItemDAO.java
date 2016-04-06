@@ -1,14 +1,14 @@
-package com.normanfernandez.shopassist.DAO;
+package com.soycj.shopassist.DAO;
 
 import javax.persistence.Persistence;
-import com.normanfernandez.shopassist.models.Items;
+import com.soycj.shopassist.models.Items;
 
 
 public class ItemDAO extends ItemsJpaController
 {
         public ItemDAO()
         {
-            super(Persistence.createEntityManagerFactory("com.normanfernandez.shopassist_Persistence"));
+            super(Persistence.createEntityManagerFactory("com.soycj.shopassist_Persistence"));
         }
 
         public Items findByCode(String code)

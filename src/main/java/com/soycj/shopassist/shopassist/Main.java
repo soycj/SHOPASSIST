@@ -1,5 +1,5 @@
-package com.normanfernandez.shopassist.shopassist;
-import com.normanfernandez.shopassist.views.SalesForm;
+package com.soycj.shopassist.shopassist;
+import com.soycj.shopassist.views.SalesForm;
 
 public class Main 
 {

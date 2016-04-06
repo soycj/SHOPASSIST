@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.normanfernandez.shopassist.DAO;
+package com.soycj.shopassist.DAO;
 
-import com.normanfernandez.shopassist.DAO.exceptions.NonexistentEntityException;
-import com.normanfernandez.shopassist.models.Items;
+import com.soycj.shopassist.DAO.exceptions.NonexistentEntityException;
+import com.soycj.shopassist.models.Items;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;

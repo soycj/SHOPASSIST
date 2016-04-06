@@ -1,4 +1,4 @@
-package com.normanfernandez.shopassist.DAO;
+package com.soycj.shopassist.DAO;
 
 import java.sql.SQLException;
 import java.util.List;

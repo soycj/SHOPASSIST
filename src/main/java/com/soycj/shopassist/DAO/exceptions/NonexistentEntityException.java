@@ -1,4 +1,4 @@
-package com.normanfernandez.shopassist.DAO.exceptions;
+package com.soycj.shopassist.DAO.exceptions;
 
 public class NonexistentEntityException extends Exception {
     public NonexistentEntityException(String message, Throwable cause) {

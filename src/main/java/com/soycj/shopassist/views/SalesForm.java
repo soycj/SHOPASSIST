@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.normanfernandez.shopassist.views;
+package com.soycj.shopassist.views;
 
-import com.normanfernandez.shopassist.DAO.ItemDAO;
-import com.normanfernandez.shopassist.models.Items;
+import com.soycj.shopassist.DAO.ItemDAO;
+import com.soycj.shopassist.models.Items;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;

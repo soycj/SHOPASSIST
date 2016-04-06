@@ -1,4 +1,4 @@
-package com.normanfernandez.shopassist.DAO.exceptions;
+package com.soycj.shopassist.DAO.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {
