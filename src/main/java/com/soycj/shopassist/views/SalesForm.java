@@ -19,8 +19,8 @@ public class SalesForm extends javax.swing.JFrame {
 
     private double subtotal = 0.0;
     private final HashMap<Items, Integer> itemList = new HashMap<>();
-    private final String [] col = {"code", "name", "price","position", "quantity"};
-    private final DefaultTableModel model = new DefaultTableModel(col,0);
+    private final String [] columnName = {"code", "name", "price","position", "quantity"};
+    private final DefaultTableModel model = new DefaultTableModel(columnName,0);
     private final ItemDAO itemDAO = new ItemDAO();
     private Items lastItem;
        
