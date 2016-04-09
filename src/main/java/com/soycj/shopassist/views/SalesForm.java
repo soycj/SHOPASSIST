@@ -50,6 +50,27 @@ public class SalesForm extends javax.swing.JFrame {
         this.lblSubtotal.setText(String.format("$%.02f", subtotal));
     }
     
+    private void removeProdct(Items item)
+    {
+        if(itemList.containsKey(item))
+        {
+            Integer quantity = itemList.get(item);
+            if(quantity - Integer.valueOf(spQuantity.getValue().toString()) < 1)
+                itemList.remove(item);
+            else
+                itemList.put(item, quantity - Integer.valueOf(spQuantity.getValue().toString()));
+        }
+        else
+        {
+            itemList.remove(item);
+        }
+        refreshList();
+        this.lblName.setText(item.getName());
+        this.lblDescription.setText(item.getDescription());
+        this.lblPrice.setText(String.format("-$%.02f", item.getUnitPrice().doubleValue()));
+        refreshSubtotal();
+    }
+    
     private void addProduct(Items item)
     {
         if(itemList.containsKey(item))
@@ -80,6 +101,7 @@ public class SalesForm extends javax.swing.JFrame {
         this.model.setRowCount(0);
         this.subtotal = 0.0;
         this.itemList.clear();
+        this.chRemover.doClick();
         clearProductInfo();
         refreshSubtotal();
     }
@@ -87,6 +109,7 @@ public class SalesForm extends javax.swing.JFrame {
     public SalesForm() 
     {
         initComponents();
+        this.setLocationRelativeTo(null);
         txtCode.requestFocusInWindow();
     }
 
@@ -114,6 +137,7 @@ public class SalesForm extends javax.swing.JFrame {
         txtCode = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         spQuantity = new javax.swing.JSpinner();
+        chRemover = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,6 +186,13 @@ public class SalesForm extends javax.swing.JFrame {
             }
         });
 
+        chRemover.setText("Remover Artículo");
+        chRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chRemoverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,9 +227,11 @@ public class SalesForm extends javax.swing.JFrame {
                                         .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(spQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chRemover)
+                                .addGap(18, 18, 18)
                                 .addComponent(jButton1)
-                                .addGap(139, 139, 139))))
+                                .addGap(79, 79, 79))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnClear)
                         .addGap(114, 114, 114))))
@@ -228,7 +261,8 @@ public class SalesForm extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
+                            .addComponent(jButton1)
+                            .addComponent(chRemover))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
@@ -249,10 +283,11 @@ public class SalesForm extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
             Items i = itemDAO.findByCode(txtCode.getText().trim());
-            this.addProduct(i);
+            if(!chRemover.isSelected())
+                    this.addProduct(i);
+                else this.removeProdct(i);
         }catch(Exception e){
             clearProductInfo();
-            e.printStackTrace();
             this.lblName.setText("Producto no encontrado!");
         }
         finally
@@ -269,12 +304,13 @@ public class SalesForm extends javax.swing.JFrame {
             try
             {
                 Items i = itemDAO.findByCode(txtCode.getText().trim());
-                this.addProduct(i);
+                if(!chRemover.isSelected())
+                    this.addProduct(i);
+                else this.removeProdct(i);
             }
             catch(Exception e)
             {
                 clearProductInfo();
-                e.printStackTrace();
                 this.lblName.setText("Producto no encontrado!");
             }
             finally
@@ -289,6 +325,11 @@ public class SalesForm extends javax.swing.JFrame {
         txtCode.requestFocusInWindow();
     }//GEN-LAST:event_spQuantityStateChanged
 
+    private void chRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chRemoverActionPerformed
+        // TODO add your handling code here:
+        txtCode.requestFocus();
+    }//GEN-LAST:event_chRemoverActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -296,6 +337,7 @@ public class SalesForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
+    private javax.swing.JCheckBox chRemover;
     private javax.swing.JTable itemTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
