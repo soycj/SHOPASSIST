@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Items.findByUnitPrice", query = "SELECT i FROM Items i WHERE i.unitPrice = :unitPrice"),
     @NamedQuery(name = "Items.findByTaxRate", query = "SELECT i FROM Items i WHERE i.taxRate = :taxRate"),
     @NamedQuery(name = "Items.findByItemscol", query = "SELECT i FROM Items i WHERE i.itemscol = :itemscol")})
-public class Items implements Serializable {
+public class Items implements Serializable, ItemDetail {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -149,7 +149,7 @@ public class Items implements Serializable {
         return this.getId().equals(other.getId());
     }
 
-    public Object [] toArr(){
+    public Object [] toObjectArray(){
         return new Object[]{ code, name, 
             getUnitPrice().toPlainString(), getPosition() };
     }

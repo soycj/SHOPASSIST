@@ -6,6 +6,7 @@
 package com.soycj.shopassist.views;
 
 import com.soycj.shopassist.DAO.ItemDAO;
+import com.soycj.shopassist.models.ItemDetail;
 import com.soycj.shopassist.models.Items;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class SalesForm extends javax.swing.JFrame {
         this.subtotal = 0.0;
         for(Map.Entry<Items, Integer> iterator : itemList.entrySet())
         {
-            this.model.addRow(appendQuantity(iterator.getKey().toArr(), iterator.getValue()));
+            this.model.addRow(appendQuantity(iterator.getKey(), iterator.getValue()));
             this.subtotal+= (iterator.getKey().getUnitPrice().doubleValue() * iterator.getValue());
         }
         this.lblSubtotal.setText(String.format("$%.02f", subtotal));
@@ -89,9 +90,9 @@ public class SalesForm extends javax.swing.JFrame {
         refreshSubtotal();
     }
     
-    private Object [] appendQuantity(Object [] item, Object quantity)
+    private Object [] appendQuantity(ItemDetail item, Object quantity)
     {
-        List<Object> objectList = new ArrayList<>(Arrays.asList(item));
+        List<Object> objectList = new ArrayList<>(Arrays.asList(item.toObjectArray()));
         objectList.add(quantity);
         return objectList.toArray();
     }
