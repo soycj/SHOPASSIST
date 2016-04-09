@@ -1,11 +1,11 @@
 package com.soycj.shopassist.shopassist;
-import com.soycj.shopassist.views.SalesForm;
+import com.soycj.shopassist.views.WelcomeForm;
 
 public class Main 
 {
     public static void main(String [] args)
     {
-        SalesForm form = new SalesForm();
+        WelcomeForm form = new WelcomeForm();
         form.setVisible(true);
         form.setDefaultCloseOperation(3);
     }
