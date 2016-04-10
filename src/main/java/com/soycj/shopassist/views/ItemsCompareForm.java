@@ -180,6 +180,7 @@ public class ItemsCompareForm extends javax.swing.JFrame {
                 lblNameA.setText(itemA.getName());
                 lblPriceA.setText(String.format("$%.02f", itemA.getUnitPrice().doubleValue()));
                 lblPositionA.setText(itemA.getPosition());
+                txtItemB.requestFocusInWindow();
             }
             catch(Exception e)
             {
@@ -204,6 +205,7 @@ public class ItemsCompareForm extends javax.swing.JFrame {
                 lblNameB.setText(itemB.getName());
                 lblPriceB.setText(String.format("$%.02f", itemB.getUnitPrice().doubleValue()));
                 lblPositionB.setText(itemB.getPosition());
+                txtItemA.requestFocusInWindow();
             }
             catch(Exception e)
             {
