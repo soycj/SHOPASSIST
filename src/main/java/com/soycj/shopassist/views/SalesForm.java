@@ -139,10 +139,11 @@ public class SalesForm extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         spQuantity = new javax.swing.JSpinner();
         chRemover = new javax.swing.JCheckBox();
+        btnCompare = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnClear.setText("Clear");
+        btnClear.setText("Limpiar");
         btnClear.setName(""); // NOI18N
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,6 +195,13 @@ public class SalesForm extends javax.swing.JFrame {
             }
         });
 
+        btnCompare.setText("Comparar Artículos");
+        btnCompare.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCompareActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -235,7 +243,9 @@ public class SalesForm extends javax.swing.JFrame {
                                 .addGap(79, 79, 79))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnClear)
-                        .addGap(114, 114, 114))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCompare)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,7 +279,9 @@ public class SalesForm extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(lblSubtotal))))
                 .addGap(18, 18, 18)
-                .addComponent(btnClear)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClear)
+                    .addComponent(btnCompare))
                 .addGap(104, 104, 104))
         );
 
@@ -285,8 +297,9 @@ public class SalesForm extends javax.swing.JFrame {
         try{
             Items i = itemDAO.findByCode(txtCode.getText().trim());
             if(!chRemover.isSelected())
-                    this.addProduct(i);
-                else this.removeProdct(i);
+                this.addProduct(i);
+            else 
+                this.removeProdct(i);
         }catch(Exception e){
             clearProductInfo();
             this.lblName.setText("Producto no encontrado!");
@@ -307,7 +320,8 @@ public class SalesForm extends javax.swing.JFrame {
                 Items i = itemDAO.findByCode(txtCode.getText().trim());
                 if(!chRemover.isSelected())
                     this.addProduct(i);
-                else this.removeProdct(i);
+                else 
+                    this.removeProdct(i);
             }
             catch(Exception e)
             {
@@ -331,13 +345,13 @@ public class SalesForm extends javax.swing.JFrame {
         txtCode.requestFocus();
     }//GEN-LAST:event_chRemoverActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-
+    private void btnCompareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompareActionPerformed
+        new ItemsCompareForm().setVisible(true);
+    }//GEN-LAST:event_btnCompareActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnCompare;
     private javax.swing.JCheckBox chRemover;
     private javax.swing.JTable itemTable;
     private javax.swing.JButton jButton1;
