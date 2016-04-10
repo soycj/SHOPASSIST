@@ -23,7 +23,6 @@ public class SalesForm extends javax.swing.JFrame {
     private final String [] columnName = {"code", "name", "price","position", "quantity"};
     private final DefaultTableModel model = new DefaultTableModel(columnName,0);
     private final ItemDAO itemDAO = new ItemDAO();
-    private Items lastItem;
        
     private void clearProductInfo()
     {
@@ -45,13 +44,19 @@ public class SalesForm extends javax.swing.JFrame {
         this.subtotal = 0.0;
         for(Map.Entry<Items, Integer> iterator : itemList.entrySet())
         {
+            //el iterator es el que va a recorrer la lista de los productos
+            
             this.model.addRow(appendQuantity(iterator.getKey(), iterator.getValue()));
-            this.subtotal+= (iterator.getKey().getUnitPrice().doubleValue() * iterator.getValue());
+            this.subtotal+= (
+                    iterator.getKey().getUnitPrice().doubleValue() //precio
+                    +(iterator.getKey().getUnitPrice().doubleValue() //precio por impuesto
+                    *(iterator.getKey().getTaxRate().doubleValue())
+                ))*iterator.getValue();
         }
         this.lblSubtotal.setText(String.format("$%.02f", subtotal));
     }
     
-    private void removeProdct(Items item)
+    private void removeProduct(Items item)
     {
         if(itemList.containsKey(item))
         {
@@ -299,7 +304,7 @@ public class SalesForm extends javax.swing.JFrame {
             if(!chRemover.isSelected())
                 this.addProduct(i);
             else 
-                this.removeProdct(i);
+                this.removeProduct(i);
         }catch(Exception e){
             clearProductInfo();
             this.lblName.setText("Producto no encontrado!");
@@ -321,7 +326,7 @@ public class SalesForm extends javax.swing.JFrame {
                 if(!chRemover.isSelected())
                     this.addProduct(i);
                 else 
-                    this.removeProdct(i);
+                    this.removeProduct(i);
             }
             catch(Exception e)
             {
