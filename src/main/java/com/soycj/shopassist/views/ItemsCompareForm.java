@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.soycj.shopassist.views;
 
 import com.soycj.shopassist.DAO.ItemDAO;
 import com.soycj.shopassist.models.Items;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author elnor
- */
 public class ItemsCompareForm extends javax.swing.JFrame {
 
     private Items itemA;
@@ -101,6 +93,18 @@ public class ItemsCompareForm extends javax.swing.JFrame {
         jLabel1.setText("Artículo 1:");
 
         jLabel2.setText("Artículo 2");
+
+        txtItemA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtItemAKeyPressed(evt);
+            }
+        });
+
+        txtItemB.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtItemBKeyPressed(evt);
+            }
+        });
 
         jLabel3.setText("Nombre:");
 
@@ -226,6 +230,42 @@ public class ItemsCompareForm extends javax.swing.JFrame {
     private void btnCompareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompareActionPerformed
         compareItems();
     }//GEN-LAST:event_btnCompareActionPerformed
+
+    private void txtItemAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtItemAKeyPressed
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            try
+            {
+                itemA = itemDAO.findByCode(txtItemA.getText().trim());
+            }
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(this, "No se pudo encontrar el artículo!", "", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            lblNameA.setText(itemA.getName());
+            lblPriceA.setText(String.format("$%.02f", itemA.getUnitPrice().doubleValue()));
+            lblPositionA.setText(itemA.getPosition());
+        }
+    }//GEN-LAST:event_txtItemAKeyPressed
+
+    private void txtItemBKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtItemBKeyPressed
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            try
+            {
+                itemB = itemDAO.findByCode(txtItemA.getText().trim());
+            }
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(this, "No se pudo encontrar el artículo!", "", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            lblNameB.setText(itemB.getName());
+            lblPriceB.setText(String.format("$%.02f", itemB.getUnitPrice().doubleValue()));
+            lblPositionB.setText(itemB.getPosition());
+        }
+    }//GEN-LAST:event_txtItemBKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
