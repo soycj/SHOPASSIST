@@ -17,54 +17,7 @@ public class ItemsCompareForm extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
-    
-    private void clearFields()
-    {
-        txtItemA.setText("");
-        txtItemB.setText("");
-        lblNameA.setText("");
-        lblNameB.setText("");
-        lblPositionA.setText("");
-        lblPositionB.setText("");
-        lblPriceA.setText("");
-        lblPriceB.setText("");
-    }
-    
-    private boolean validateItems()
-    {
-        try
-        {
-            itemA = itemDAO.findByCode(txtItemA.getText().trim());
-            itemB = itemDAO.findByCode(txtItemB.getText().trim());
-            
-        }
-        catch(Exception e)
-        {
-            JOptionPane.showMessageDialog(this, "No se pudo encontrar uno de los artículos!", "", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        
-        return true;
-    }
-    
-    private void compareItems()
-    {
-        if(!validateItems()){
-            clearFields();
-            return;
-        }
-        clearFields();
 
-        
-        lblNameA.setText(itemA.getName());
-        lblPriceA.setText(String.format("$%.02f", itemA.getUnitPrice().doubleValue()));
-        lblPositionA.setText(itemA.getPosition());
-        
-        lblNameB.setText(itemB.getName());
-        lblPriceB.setText(String.format("$%.02f", itemB.getUnitPrice().doubleValue()));
-        lblPositionB.setText(itemB.getPosition());
-    }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -79,7 +32,6 @@ public class ItemsCompareForm extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        btnCompare = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
         lblNameA = new javax.swing.JLabel();
         lblPriceA = new javax.swing.JLabel();
@@ -89,6 +41,7 @@ public class ItemsCompareForm extends javax.swing.JFrame {
         lblPositionB = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Comparación de Productos");
 
         jLabel1.setText("Artículo 1:");
 
@@ -117,13 +70,6 @@ public class ItemsCompareForm extends javax.swing.JFrame {
         jLabel7.setText("Precio:");
 
         jLabel8.setText("Posición:");
-
-        btnCompare.setText("Comparar");
-        btnCompare.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCompareActionPerformed(evt);
-            }
-        });
 
         btnClose.setText("Cerrar");
         btnClose.addActionListener(new java.awt.event.ActionListener() {
@@ -170,9 +116,7 @@ public class ItemsCompareForm extends javax.swing.JFrame {
                             .addComponent(lblPositionB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(btnCompare)
-                .addGap(52, 52, 52)
+                .addGap(152, 152, 152)
                 .addComponent(btnClose)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -213,11 +157,9 @@ public class ItemsCompareForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblPositionB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCompare)
-                    .addComponent(btnClose))
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(btnClose)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -227,25 +169,27 @@ public class ItemsCompareForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
-    private void btnCompareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompareActionPerformed
-        compareItems();
-    }//GEN-LAST:event_btnCompareActionPerformed
-
     private void txtItemAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtItemAKeyPressed
         if(evt.getKeyChar() == KeyEvent.VK_ENTER)
         {
             try
             {
                 itemA = itemDAO.findByCode(txtItemA.getText().trim());
+                
+                txtItemA.setText("");
+                lblNameA.setText(itemA.getName());
+                lblPriceA.setText(String.format("$%.02f", itemA.getUnitPrice().doubleValue()));
+                lblPositionA.setText(itemA.getPosition());
             }
             catch(Exception e)
             {
+                txtItemA.setText("");
+                lblNameA.setText("");
+                lblPositionA.setText("");
+                lblPriceA.setText("");
+        
                 JOptionPane.showMessageDialog(this, "No se pudo encontrar el artículo!", "", JOptionPane.INFORMATION_MESSAGE);
             }
-            
-            lblNameA.setText(itemA.getName());
-            lblPriceA.setText(String.format("$%.02f", itemA.getUnitPrice().doubleValue()));
-            lblPositionA.setText(itemA.getPosition());
         }
     }//GEN-LAST:event_txtItemAKeyPressed
 
@@ -254,22 +198,26 @@ public class ItemsCompareForm extends javax.swing.JFrame {
         {
             try
             {
-                itemB = itemDAO.findByCode(txtItemA.getText().trim());
+                itemB = itemDAO.findByCode(txtItemB.getText().trim());
+                
+                txtItemB.setText("");
+                lblNameB.setText(itemB.getName());
+                lblPriceB.setText(String.format("$%.02f", itemB.getUnitPrice().doubleValue()));
+                lblPositionB.setText(itemB.getPosition());
             }
             catch(Exception e)
             {
+                txtItemB.setText("");
+                lblNameB.setText("");
+                lblPositionB.setText("");
+                lblPriceB.setText("");
                 JOptionPane.showMessageDialog(this, "No se pudo encontrar el artículo!", "", JOptionPane.INFORMATION_MESSAGE);
             }
-            
-            lblNameB.setText(itemB.getName());
-            lblPriceB.setText(String.format("$%.02f", itemB.getUnitPrice().doubleValue()));
-            lblPositionB.setText(itemB.getPosition());
         }
     }//GEN-LAST:event_txtItemBKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnCompare;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
