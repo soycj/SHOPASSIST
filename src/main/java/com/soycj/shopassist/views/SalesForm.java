@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.soycj.shopassist.views;
 
 import com.soycj.shopassist.DAO.ItemDAO;
@@ -186,6 +181,7 @@ public class SalesForm extends javax.swing.JFrame {
 
         spQuantity.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
         spQuantity.setToolTipText("");
+        spQuantity.setDoubleBuffered(true);
         spQuantity.setNextFocusableComponent(txtCode);
         spQuantity.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
