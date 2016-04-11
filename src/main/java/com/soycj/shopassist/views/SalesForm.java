@@ -1,13 +1,9 @@
 package com.soycj.shopassist.views;
 
 import com.soycj.shopassist.DAO.ItemDAO;
-import com.soycj.shopassist.models.ItemDetail;
 import com.soycj.shopassist.models.Items;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 
@@ -41,7 +37,16 @@ public class SalesForm extends javax.swing.JFrame {
         {
             //el iterator es el que va a recorrer la lista de los productos
             
-            this.model.addRow(appendQuantity(iterator.getKey(), iterator.getValue()));
+            this.model.addRow(
+                    new Object[]
+                    {
+                        iterator.getKey().getCode(),
+                        iterator.getKey().getName(), 
+                        iterator.getKey().getUnitPrice().toPlainString(),
+                        iterator.getKey().getPosition(),
+                        iterator.getValue()
+                    });
+            
             this.subtotal+= (
                     iterator.getKey().getUnitPrice().doubleValue() //precio
                     +(iterator.getKey().getUnitPrice().doubleValue() //precio por impuesto
@@ -88,13 +93,6 @@ public class SalesForm extends javax.swing.JFrame {
         this.lblDescription.setText(item.getDescription());
         this.lblPrice.setText(String.format("$%.02f", item.getUnitPrice().doubleValue()));
         refreshSubtotal();
-    }
-    
-    private Object [] appendQuantity(ItemDetail item, Object quantity)
-    {
-        List<Object> objectList = new ArrayList<>(Arrays.asList(item.toObjectArray()));
-        objectList.add(quantity);
-        return objectList.toArray();
     }
     
     private void clearTable()
