@@ -14,8 +14,8 @@ import javax.swing.table.DefaultTableModel;
 public class SalesForm extends javax.swing.JFrame {
 
     private double subtotal = 0.0;
-    private final HashMap<Items, Integer> itemList = new HashMap<>();
-    private final String [] columnName = {"code", "name", "price","position", "quantity"};
+    private final HashMap<Items, Integer> itemList;
+    private final String [] columnName = {"Código", "Producto", "Precio","Pasillo", "Cantidad"};
     private final DefaultTableModel model = new DefaultTableModel(columnName,0);
     private final ItemDAO itemDAO = new ItemDAO();
        
@@ -112,6 +112,7 @@ public class SalesForm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         txtCode.requestFocusInWindow();
+        itemList = new HashMap();
     }
 
     @SuppressWarnings("unchecked")
