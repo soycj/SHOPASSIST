@@ -99,9 +99,8 @@ public class ListForm extends javax.swing.JFrame {
                 );
         }
         
-        position = selectedItem.stream()
-                .map((i) -> i.getName() + " - en el pasillo: " + i.getPosition()+"\n")
-                .reduce(position, String::concat); 
+        for (Items i:selectedItem )          
+           position += i.getName() + " - en el pasillo: " + i.getPosition()+"\n";
         
         JOptionPane.showMessageDialog(this, position, "Lista de artículos", JOptionPane.INFORMATION_MESSAGE);
         
