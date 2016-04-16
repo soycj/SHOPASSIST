@@ -1,4 +1,5 @@
 package com.soycj.shopassist.views;
+import javax.swing.*;
 
 public class WelcomeForm extends javax.swing.JFrame {
 
@@ -17,10 +18,13 @@ public class WelcomeForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SHOPASSIST");
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("¡BIENVENIDOS!");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, -1, 89));
 
         btnContinuar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnContinuar.setText("Continuar");
@@ -29,6 +33,7 @@ public class WelcomeForm extends javax.swing.JFrame {
                 btnContinuarActionPerformed(evt);
             }
         });
+        getContentPane().add(btnContinuar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 260, -1, -1));
 
         btnList.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnList.setText("Lista de Compras");
@@ -37,34 +42,7 @@ public class WelcomeForm extends javax.swing.JFrame {
                 btnListActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(108, 108, 108)
-                        .addComponent(btnContinuar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnList)))
-                .addContainerGap(120, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnContinuar)
-                    .addComponent(btnList))
-                .addGap(69, 69, 69))
-        );
+        getContentPane().add(btnList, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 260, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
